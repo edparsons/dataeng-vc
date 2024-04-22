@@ -3,7 +3,7 @@ import Image from "next/image"
 
 import { DataTable } from "@/src/components/tables/DataTable"
 import { createServerSupabaseClient } from "@/src/lib/supabase-server"
-import { columns } from "./columns"
+import { Tool, columns } from "./columns"
 import { AddToolDialog } from "./AddToolDialog"
 
 export const metadata: Metadata = {
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default async function ToolsPage() {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase.from('tools').select('*, reviews (id, price)').eq('status', 'approved');
+  const tools = data as Tool[];
 
   return (
     <>
@@ -30,7 +31,7 @@ export default async function ToolsPage() {
         <div>
           <AddToolDialog />
         </div>
-        <DataTable data={data ?? []} columns={columns} filterLabel="tools" />
+        <DataTable data={tools ?? []} columns={columns} filterLabel="tools" />
       </div>
     </>
   )

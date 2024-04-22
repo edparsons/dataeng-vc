@@ -37,6 +37,7 @@
     "clsx": "^2.0.0",
     "cookies-next": "^4.1.1",
     "date-fns": "^3.6.0",
+    "lint": "^0.8.19",
     "lucide-react": "^0.294.0",
     "next": "latest",
     "next-safe-action": "5.0.2",

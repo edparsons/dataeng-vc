@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from "@/src/components/tables/DataTableColumnHe
 import { Database } from "@/src/types_db"
 import Link from "next/link"
 
-type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Database['public']['Tables']['reviews']['Row'][] }
+export type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Database['public']['Tables']['reviews']['Row'][] }
 
 export const getRootDomain = (url: string | null) => {
   if (!url) return '';
