@@ -22,7 +22,7 @@ export default async function OrganzationView(props: OrganzationViewProps) {
         <div>
           Team:
           <div>
-            {data.users.map((user) => (<div>{user.name} ({user.email})</div>))}
+            {data.users.map((user) => (<div key={user.id}>{user.name} ({user.email})</div>))}
           </div>
         </div>
         {/* <DataTable data={data ?? []} columns={columns} /> */}

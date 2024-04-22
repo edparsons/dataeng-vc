@@ -8,7 +8,7 @@ import {
   PageHeaderHeading,
 } from "@/src/components/ui/page-header"
 import { buttonVariants } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 
 export default function IndexPage() {
   return (
@@ -49,6 +49,11 @@ export default function IndexPage() {
             <div>Using the tools database organzations can annoymously share what tools they use and the terms of the contract.</div>
             <div>Through the aggregation of these contracts we aim to provide benchmarking data so future members can have more information going into negioations with vendors.</div>
           </CardContent>
+          <CardFooter>
+            <p className="text-sm text-muted-foreground">
+              This was inspired by chats on <a>VC Data People</a> and the initial tools db was seeded with data by @Francesco_AI
+            </p>
+          </CardFooter>
         </Card>
       </PageHeader>
     </div>

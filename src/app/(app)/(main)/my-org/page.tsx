@@ -35,7 +35,7 @@ export default async function OrgsPage() {
         <div>
           Team:
           <div>
-            {data.organization?.users.map((user) => (<div>{user.name} ({user.email})</div>))}
+            {data.organization?.users.map((user) => (<div key={user.id}>{user.name} ({user.email})</div>))}
           </div>
         </div>
         <OrgPasswordInput />
