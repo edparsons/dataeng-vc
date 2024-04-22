@@ -1,0 +1,23 @@
+.root {
+  @apply sticky top-0 bg-black z-40 transition-all duration-150 h-16 md:h-20;
+}
+
+.link:focus {
+  @apply outline-none text-zinc-100 ring-2 ring-zinc-500 ring-opacity-50;
+}
+
+.active {
+  @apply ring-2 ring-zinc-500 ring-opacity-100;
+}
+
+.mlink {
+  @apply inline-flex items-center leading-6 font-medium transition ease-in-out duration-75 cursor-pointer text-zinc-900 rounded-md p-1;
+}
+
+.mlink:hover {
+  @apply text-zinc-800;
+}
+
+.mlink:focus {
+  @apply outline-none text-zinc-800 ring-2 ring-zinc-500 ring-opacity-50;
+}
