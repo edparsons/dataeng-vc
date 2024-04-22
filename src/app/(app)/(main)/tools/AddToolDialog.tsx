@@ -23,17 +23,20 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { useToast } from "@/src/components/ui/use-toast";
 
 export function AddToolDialog() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { toast } = useToast()
 
   const { mutate: addTool } = useAction({
     action: addToolAction,
     onSuccess: ({ result }) => {
       setIsLoading(false)
-      toast.success('Tool added successfully')
+      toast({
+        title: 'Tool added successfully'
+      })
       router.refresh()
     },
     onError: () => {
@@ -42,23 +45,23 @@ export function AddToolDialog() {
     }
   })
 
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof upsertToolSchema>>({
-      resolver: zodResolver(upsertToolSchema),
-      defaultValues: {
-      },
-    })
-   
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof upsertToolSchema>) {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof upsertToolSchema>>({
+    resolver: zodResolver(upsertToolSchema),
+    defaultValues: {
+    },
+  })
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof upsertToolSchema>) {
     setIsLoading(true)
     try {
-    await addTool(values)
-  } catch (error) {
-    alert(error)
-    setIsLoading(false)
-  } finally {
-  }
+      await addTool(values)
+    } catch (error) {
+      alert(error)
+      setIsLoading(false)
+    } finally {
+    }
   }
   return (
     <Dialog>
@@ -211,12 +214,12 @@ export function AddToolDialog() {
                 </FormItem>
               )}
             />
-          <DialogFooter>
-          <Button type="submit" disabled={isLoading}>
-            { isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
-            Add
-          </Button>
-        </DialogFooter>
+            <DialogFooter>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
+                Add
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

@@ -15,7 +15,7 @@ import { Calendar as CalendarIcon } from "@phosphor-icons/react/dist/ssr"
 
 type DatePickerProps = { 
   value: Date | undefined,
-  onSelect: (date: Date) => void 
+  onSelect: (date: Date | undefined) => void 
   id?: string
   className?: string
 }
@@ -41,7 +41,9 @@ export function DatePicker({value, onSelect, id, className}: DatePickerProps) {
           id={id}
           mode="single"
           selected={value}
-          onSelect={onSelect}
+          onSelect={(date, selectedDay, activeModifiers, e) => {
+            onSelect(date)
+          }}
           initialFocus
         />
       </PopoverContent>

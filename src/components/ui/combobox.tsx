@@ -3,11 +3,9 @@
 import { Button } from '@/src/components/ui/button';
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandLoading,
 } from '@/src/components/ui/command';
 import {
   Popover,
@@ -85,11 +83,11 @@ export function Combobox<T extends { id: string | number }>(props: Props<T>) {
           />
           {
             loading ? (
-              <CommandLoading>
+              <CommandItem>
                 <div className="px-2 py-1.5 text-center text-sm">
                   Fetching contacts...
                 </div>
-              </CommandLoading>
+              </CommandItem>
             ) : null
             // <CommandEmpty onSelect={() => {props.selectEmptyText?.(search)}}>asdf{props.emptyText ? props.emptyText(search) : 'No contact found.'}</CommandEmpty>
           }

@@ -8,6 +8,7 @@ import {
   PageHeaderHeading,
 } from "@/src/components/ui/page-header"
 import { buttonVariants } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 
 export default function IndexPage() {
   return (
@@ -28,17 +29,27 @@ export default function IndexPage() {
           </svg>
           <div>
             DataEng.vc
-            </div>
-          </PageHeaderHeading>
+          </div>
+        </PageHeaderHeading>
         <PageHeaderDescription>
           This is a community of engineers and data scientists who working in VC.
-          We work to build relationships, share knowledge, in a field that can be isolating.
+          We work to build relationships, share knowledge, and bring people together.
         </PageHeaderDescription>
         <PageActions>
           <Link href="/sign-in/" className={cn(buttonVariants())}>
             Get Started
           </Link>
         </PageActions>
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>Tools DB</CardTitle>
+            <CardDescription>Our first project is a tools database</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div>Using the tools database organzations can annoymously share what tools they use and the terms of the contract.</div>
+            <div>Through the aggregation of these contracts we aim to provide benchmarking data so future members can have more information going into negioations with vendors.</div>
+          </CardContent>
+        </Card>
       </PageHeader>
     </div>
   )

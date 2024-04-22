@@ -2,15 +2,16 @@
 
 import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
+import { useToast } from "@/src/components/ui/use-toast";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from 'react-hot-toast';
 
 export default function OrgprivateKeyInput() {
   const [hasKey,setHasKey] = useState<boolean>(false)
   const [privateKey, setPrivateKey] = useState<string>("")
   const router = useRouter()
+  const { toast } = useToast()
 
   useEffect(() => {
     const privateKey = localStorage.getItem('private_key');
@@ -26,7 +27,9 @@ export default function OrgprivateKeyInput() {
 
   const copyPrivateKey = () => {
     navigator.clipboard.writeText(privateKey)
-    toast.success('Private key copied to clipboard')
+    toast({
+      title: 'Private key copied to clipboard'
+    })
   }
       return !hasKey ? (
         <div>
