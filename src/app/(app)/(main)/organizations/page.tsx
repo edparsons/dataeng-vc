@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from "@/src/lib/supabase-server"
 import { columns } from "./columns"
 
 export const metadata: Metadata = {
-  title: "Organizations",
+  title: "DataEng.vc - Organizations",
 }
 
 export default async function OrgsPage() {

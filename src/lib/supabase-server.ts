@@ -47,7 +47,7 @@ export async function getUser() {
   }
   const { data } = await supabase
     .from('users')
-    .select('*, organization:organizations(*)')
+    .select('*, organization:organizations!users_organization_id_fkey(*)')
     .eq('id', session.user.id)
     .single();
   return { user: data, supabase, session };

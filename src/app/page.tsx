@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Metadata } from "next"
 
 import { cn } from "@/src/lib/utils"
 import {
@@ -9,6 +10,10 @@ import {
 } from "@/src/components/ui/page-header"
 import { buttonVariants } from "../components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
+
+export const metadata: Metadata = {
+  title: "DataEng.vc",
+}
 
 export default function IndexPage() {
   return (

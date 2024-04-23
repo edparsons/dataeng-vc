@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from "@/src/lib/supabase-server"
 import { columns } from "./columns"
 
 export const metadata: Metadata = {
-  title: "Users",
+  title: "DataEng.vc - Users",
   description: "A user tracker build using Tanstack Table.",
 }
 

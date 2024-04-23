@@ -26,7 +26,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       const { error, data: { user } } =
         mode === 'LOGIN'
           ? await supabase.auth.signInWithPassword({ email: username, password })
-          : await supabase.auth.signUp({ email: username, password })
+          : await supabase.auth.signUp({ email: username, password, options: { emailRedirectTo: window.location.origin + '/tools'}})
       // If the user doesn't exist here and an error hasn't been raised yet,
       // that must mean that a confirmation email has been sent.
       // NOTE: Confirming your email address is required by default.
@@ -35,7 +35,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       } else if (!user || !user.email_confirmed_at) {
         alert('Signup successful, confirmation mail should be sent soon!')
       } else {
-        router.push('/users')
+        router.push('/tools')
       }
     } catch (error) {
       console.log('error', error)

@@ -7,7 +7,7 @@ import { Tool, columns } from "./columns"
 import { AddToolDialog } from "./AddToolDialog"
 
 export const metadata: Metadata = {
-  title: "Tools",
+  title: "DataEng.vc - Tools",
 }
 
 export default async function ToolsPage() {

@@ -45,7 +45,7 @@ export default function SupabaseProvider({
     if (user.data.user) {
       const { data } = await supabase
         .from('users')
-        .select('*, organization:organizations(*)')
+        .select('*, organization:organizations!users_organization_id_fkey(*)')
         .eq('id', user.data.user.id)
         .single();
       const userIdenfity: Record<string, string> = {};

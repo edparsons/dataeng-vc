@@ -5,7 +5,7 @@ import { DataTable } from "@/src/components/tables/DataTable";
 import { columns } from "./columns";
 
 export const metadata: Metadata = {
-  title: "Organizations",
+  title: "DataEng.vc - Organizations",
 }
 
 export default async function ToolsPage(params: { params: { toolId: string }}) {

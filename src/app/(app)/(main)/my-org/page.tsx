@@ -5,7 +5,7 @@ import OrgPasswordInput from "./OrgPasswordInput"
 import OrgTools from "./OrgTools"
 
 export const metadata: Metadata = {
-  title: "Organizations",
+  title: "DataEng.vc - My Organization",
 }
 
 export default async function OrgsPage() {
@@ -17,7 +17,7 @@ export default async function OrgsPage() {
   }
 
   const { data } = await supabase.from('users')
-  .select('*, organization:organizations(*, users(*))')
+  .select('*, organization:organizations!users_organization_id_fkey(*, users!users_organization_id_fkey(*))')
   .eq('id', session.user.id)
   .single()
 

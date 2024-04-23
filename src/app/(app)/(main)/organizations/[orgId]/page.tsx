@@ -3,7 +3,7 @@ import { createServerSupabaseClient } from "@/src/lib/supabase-server"
 import OrganzationView from "./organization";
 
 export const metadata: Metadata = {
-  title: "Organizations",
+  title: "DataEng.vc - Organizations",
 }
 
 export default async function ToolsPage(params: { params: { orgId: string }}) {

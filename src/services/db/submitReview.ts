@@ -16,7 +16,7 @@ export const { handler, action } = createService(
         throw new Error("No user");
       }
       
-      const { data: user } = await supabaseService.from("users").select("*, organization: organizations (*) ").eq('id', session.user.id).single();
+      const { data: user } = await supabaseService.from("users").select("*, organization: organizations!users_organization_id_fkey (*) ").eq('id', session.user.id).single();
       if (!user) {
         throw new Error("User not found");
       }
