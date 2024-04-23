@@ -6,25 +6,9 @@ import { Checkbox } from "@/src/components/ui/checkbox"
 import { DataTableColumnHeader } from "@/src/components/tables/DataTableColumnHeader"
 import { Database } from "@/src/types_db"
 import Link from "next/link"
+import { formatCurrency, getRootDomain } from "@/src/lib/utils"
 
 export type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Database['public']['Tables']['reviews']['Row'][] }
-
-export const getRootDomain = (url: string | null) => {
-  if (!url) return '';
-  let domain = url.split('/')[2];
-  if (!domain) {
-    console.error('No domain found for url', url)
-  }
-  if (domain?.split('.').length > 2) {
-    domain = domain.split('.').slice(1).join('.')
-  }
-  return domain;
-}
-
-let formatCurrency = new Intl.NumberFormat(undefined, {
-	style: 'currency',
-	currency: 'USD'
-});
 
 
 export const columns: ColumnDef<Tool>[] = [

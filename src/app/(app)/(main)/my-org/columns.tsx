@@ -5,13 +5,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/src/components/ui/checkbox"
 import { DataTableColumnHeader } from "@/src/components/tables/DataTableColumnHeader"
 import { Database } from "@/src/types_db"
+import { formatCurrency } from "@/src/lib/utils"
 
 type Review = Database['public']['Tables']['reviews']['Row'] & { tool: Database['public']['Tables']['tools']['Row'] | null}
-
-let formatCurrency = new Intl.NumberFormat(undefined, {
-	style: 'currency',
-	currency: 'USD'
-});
 
 export const columns: ColumnDef<Review>[] = [
   // {

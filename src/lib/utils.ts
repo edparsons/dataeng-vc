@@ -21,3 +21,20 @@ export function formatDateTime(dateTimeStr: string | null) {
   };
   return date.toLocaleString('en-US', options);
 }
+
+export const getRootDomain = (url: string | null) => {
+  if (!url) return '';
+  let domain = url.split('/')[2];
+  if (!domain) {
+    console.error('No domain found for url', url)
+  }
+  if (domain?.split('.').length > 2) {
+    domain = domain.split('.').slice(1).join('.')
+  }
+  return domain;
+}
+
+export const formatCurrency = new Intl.NumberFormat(undefined, {
+	style: 'currency',
+	currency: 'USD'
+});
