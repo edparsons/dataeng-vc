@@ -4,23 +4,11 @@ import { SubmitReviewDialog } from "./SubmitReivewDialog";
 import { DataTable } from "@/src/components/tables/DataTable";
 import { columns } from "./columns";
 import ogs from 'open-graph-scraper';
+import { getRootDomain } from "@/src/lib/utils";
   
 export const metadata: Metadata = {
   title: "DataEng.vc - Organizations",
 }
-
-export const getRootDomain = (url: string | null) => {
-  if (!url) return '';
-  let domain = url.split('/')[2];
-  if (!domain) {
-    console.error('No domain found for url', url)
-  }
-  if (domain?.split('.').length > 2) {
-    domain = domain.split('.').slice(1).join('.')
-  }
-  return domain;
-}
-
 
 export default async function ToolsPage(params: { params: { toolId: string }}) {
   const supabase = createServerSupabaseClient();
