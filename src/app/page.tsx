@@ -41,7 +41,7 @@ export default function IndexPage() {
           We build relationships, share knowledge, and bring people together.
         </PageHeaderDescription>
         <PageActions>
-          <Link href="/sign-in/" className={cn(buttonVariants())}>
+          <Link href="/tools/" className={cn(buttonVariants())}>
             Get Started
           </Link>
         </PageActions>
