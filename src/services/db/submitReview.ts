@@ -64,6 +64,7 @@ export const { handler, action } = createService(
       // Upsert the review
       const { data: review, error } = await supabaseService.from("reviews").upsert({
         ...payloadData,
+        start_date: payloadData.start_date.toISOString(),
       }, {
         onConflict: 'organization_hash,tool_id',
       }).select('*').single();

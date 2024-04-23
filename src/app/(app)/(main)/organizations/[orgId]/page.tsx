@@ -10,7 +10,7 @@ export default async function ToolsPage(params: { params: { orgId: string }}) {
   const supabase = createServerSupabaseClient();
 
   const { data } = await supabase.from('organizations')
-  .select('*, users (*)')
+  .select('*, users!public_users_organization_id_fkey (*)')
   .eq('id', params.params.orgId)
   .single()
 
