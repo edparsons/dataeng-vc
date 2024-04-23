@@ -14,12 +14,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function RequestOrgForm({ className, ...props }: UserAuthFormProps) {
   const { user } = useSupabase()
   const router = useRouter()
-  if (!user) {
-    return null
-  }
   const [isLoading, setIsLoading] = useState(false)
-
-  const domain = user.email.split("@")[1];
 
   const { mutate: createOrganization } = useAction({
     action: createOrganizationAction,
@@ -30,6 +25,12 @@ export function RequestOrgForm({ className, ...props }: UserAuthFormProps) {
       setIsLoading(false)
     }
   })
+
+  if (!user) {
+    return null
+  }
+  const domain = user.email.split("@")[1];
+
 
   const handleRequest = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()

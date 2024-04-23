@@ -16,6 +16,7 @@ export type Database = {
           id: string
           name: string | null
           public_key: string | null
+          public_key_user: string | null
           status: string
           updated_at: string | null
         }
@@ -25,6 +26,7 @@ export type Database = {
           id?: string
           name?: string | null
           public_key?: string | null
+          public_key_user?: string | null
           status?: string
           updated_at?: string | null
         }
@@ -34,10 +36,19 @@ export type Database = {
           id?: string
           name?: string | null
           public_key?: string | null
+          public_key_user?: string | null
           status?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_organizations_public_key_user_fkey"
+            columns: ["public_key_user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["email"]
+          },
+        ]
       }
       reviews: {
         Row: {
@@ -94,7 +105,7 @@ export type Database = {
           status: string
           type: string
           updated_at: string | null
-          website: string | null
+          website: string
         }
         Insert: {
           api?: boolean | null
@@ -106,7 +117,7 @@ export type Database = {
           status?: string
           type: string
           updated_at?: string | null
-          website?: string | null
+          website: string
         }
         Update: {
           api?: boolean | null
@@ -118,7 +129,7 @@ export type Database = {
           status?: string
           type?: string
           updated_at?: string | null
-          website?: string | null
+          website?: string
         }
         Relationships: []
       }
@@ -127,29 +138,32 @@ export type Database = {
           created_at: string | null
           email: string
           id: string
-          name: string
+          name: string | null
           organization_id: string | null
+          photo: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           email: string
           id?: string
-          name: string
+          name?: string | null
           organization_id?: string | null
+          photo?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           email?: string
           id?: string
-          name?: string
+          name?: string | null
           organization_id?: string | null
+          photo?: string | null
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "users_organization_id_fkey"
+            foreignKeyName: "public_users_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"

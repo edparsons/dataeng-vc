@@ -27,11 +27,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       alert('Please enter your name')
       return
     }
+    setIsLoading(true)
     try {
       const { error, data: { user } } =
         mode === 'LOGIN'
           ? await supabase.auth.signInWithPassword({ email: username, password })
-          : await supabase.auth.signUp({ email: username, password, options: { emailRedirectTo: window.location.origin + '/tools', data: {
+          : await supabase.auth.signUp({ email: username, password, options: { emailRedirectTo: window.location.origin + '/auth/callback',
+             data: {
             name,
           }}})
       // If the user doesn't exist here and an error hasn't been raised yet,
@@ -47,6 +49,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     } catch (error) {
       console.log('error', error)
       alert((error as any).error_description || error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -129,9 +133,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         </div>
       </div>
       <Button variant="outline" type="button" disabled={isLoading} onClick={() => setMode(mode === 'SIGNUP' ? 'LOGIN' : 'SIGNUP')}>
-        {isLoading && (
-          <Spinner className="mr-2 h-4 w-4 animate-spin" />
-        )}
         { mode === 'LOGIN' ? 'Signup' : 'Login' }
       </Button>
     </div>

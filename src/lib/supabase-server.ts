@@ -45,10 +45,15 @@ export async function getUser() {
   if (!session) {
     return { user: null, supabase, session };
   }
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('users')
-    .select('*, organization:organizations!users_organization_id_fkey(*)')
+    .select('*, organization:organizations!public_users_organization_id_fkey(*)')
     .eq('id', session.user.id)
     .single();
+  if (!data) {
+    const error = await supabase.auth.signOut();
+    if (error) console.error('Error logging out:', error)
+    return { user: null, supabase, session };
+  }
   return { user: data, supabase, session };
 }

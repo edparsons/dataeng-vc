@@ -65,7 +65,7 @@ export function AddToolDialog() {
   }
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="outline">Add Tool</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">

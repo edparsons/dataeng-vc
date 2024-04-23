@@ -9,16 +9,16 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function PendingOrgForm({ className, ...props }: UserAuthFormProps) {
   const { user } = useSupabase()
   const router = useRouter()
+
+  useEffect(() => {
+    if (user?.organization?.status === 'approved') {
+      router.push('/tools')
+    }
+  }, [user, user?.organization?.status])
+
   if (!user) {
     return null
   }
-
-  useEffect(() => {
-    if (user.organization?.status === 'approved') {
-      router.push('/tools')
-    }
-  }, [user.organization?.status])
-
 
   const domain = user.email.split("@")[1];
 

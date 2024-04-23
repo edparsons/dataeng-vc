@@ -41,13 +41,18 @@ export default function SupabaseProvider({
 
   const refresh = useCallback(async () => {
     const user = await supabase.auth.getUser();
+    let userData = null
     setAuthUser(user.data.user);
     if (user.data.user) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('users')
-        .select('*, organization:organizations!users_organization_id_fkey(*)')
+        .select('*, organization:organizations!public_users_organization_id_fkey(*)')
         .eq('id', user.data.user.id)
         .single();
+      if (error) {
+        console.error('Error getting user:', error);
+        return;
+      }
       const userIdenfity: Record<string, string> = {};
       if (data?.name) {
         userIdenfity.name = data.name;
@@ -55,9 +60,15 @@ export default function SupabaseProvider({
       if (user.data.user.email) {
         userIdenfity.email = user.data.user.email;
       }
+      userData = data
       setUser(data);
     } else {
       setUser(null);
+    }
+    if (window.location.pathname === '/' && userData) {
+      router.push('/tools');
+    } else {
+      router.refresh();
     }
   }, []);
 
@@ -66,13 +77,21 @@ export default function SupabaseProvider({
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async () => {
       refresh();
-      router.refresh();
     });
 
     return () => {
       subscription.unsubscribe();
     };
   }, [router, supabase]);
+
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const code = urlParams.get('code');
+  //   if (code) {
+  //     console.log('Code found in URL:', code);
+  //     supabase.auth.exchangeCodeForSession(code)
+  //   }
+  // }, []);
 
   const value = useMemo(
     () => ({

@@ -17,7 +17,7 @@ export default async function OrgsPage() {
   }
 
   const { data } = await supabase.from('users')
-  .select('*, organization:organizations!users_organization_id_fkey(*, users!users_organization_id_fkey(*))')
+  .select('*, organization:organizations!public_users_organization_id_fkey(*, users!public_users_organization_id_fkey(*))')
   .eq('id', session.user.id)
   .single()
 

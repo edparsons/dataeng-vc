@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Metadata } from "next"
+import { GetServerSideProps, Metadata } from "next"
 
 import { cn } from "@/src/lib/utils"
 import {

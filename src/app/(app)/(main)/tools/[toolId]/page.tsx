@@ -19,7 +19,7 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
   }
 
   const { data: user } = await supabase.from('users')
-  .select('*, organizations!users_organization_id_fkey(*, users!users_organization_id_fkey(*))')
+  .select('*, organizations!public_users_organization_id_fkey(*, users!public_users_organization_id_fkey(*))')
   .eq('id', session.user.id)
   .single()
 

@@ -16,7 +16,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter()
-  const { supabase, user } = useSupabase()
+  const { user, refresh } = useSupabase()
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -54,7 +54,8 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
     e.preventDefault()
     if (hasTakenAction) {
       localStorage.setItem('private_key', privateKey)
-      router.push(`/tools`)
+      await refresh()
+      location.href = '/tools'
     } else {
       alert('Please email or copy your private key before continuing')
     }
@@ -76,7 +77,10 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
     setHasTakenAction(true)
   }
 
-  const getFirstName = (name: string) => {
+  const getFirstName = (name?: string | null) => {
+    if (!name) {
+      return ''
+    }
     return name.split(' ')[0]
   }
 
