@@ -106,7 +106,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
                     Price (USD)
                   </FormLabel>
                   <FormControl className="col-span-3">
-                    <Input {...field} id="price" type="number" placeholder="49" />
+                    $<Input {...field} id="price" type="number" placeholder="49.00" />
                   </FormControl>
                   <div className="col-span-1"></div>
                   <div className="col-span-3 col-offset-1">

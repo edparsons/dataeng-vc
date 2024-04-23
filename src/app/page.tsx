@@ -46,7 +46,7 @@ export default function IndexPage() {
           </Link>
         </PageActions>
         <div className="text-xl">Projects</div>
-        <Card className="w-[350px]">
+        <Card className="w-[450px]">
           <CardHeader>
             <CardTitle>Tools DB</CardTitle>
             <CardDescription>Our first project is a tools database</CardDescription>

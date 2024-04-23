@@ -21,32 +21,37 @@ export const getRootDomain = (url: string | null) => {
   return domain;
 }
 
+let formatCurrency = new Intl.NumberFormat(undefined, {
+	style: 'currency',
+	currency: 'USD'
+});
+
 
 export const columns: ColumnDef<Tool>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     id: "logo",
     header: ({ column }) => (
@@ -122,11 +127,11 @@ export const columns: ColumnDef<Tool>[] = [
   {
     id: "average_price",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Average Price" />
+      <DataTableColumnHeader column={column} title="Average Price (USD)" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{
       row.original.reviews?.length > 0 ? (
-        row.original.reviews.reduce((acc, review) => acc + (review.price || 0), 0) / row.original.reviews.length
+        formatCurrency.format(row.original.reviews.reduce((acc, review) => acc + (review.price || 0), 0) / row.original.reviews.length)
       ) : ''
     }</div>,
     enableSorting: false,

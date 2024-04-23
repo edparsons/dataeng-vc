@@ -17,16 +17,23 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { supabase } = useSupabase()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [mode, setMode] = useState<'LOGIN' | 'SIGNUP'>('LOGIN')
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    if (mode === 'SIGNUP' && !name) {
+      alert('Please enter your name')
+      return
+    }
     try {
       const { error, data: { user } } =
         mode === 'LOGIN'
           ? await supabase.auth.signInWithPassword({ email: username, password })
-          : await supabase.auth.signUp({ email: username, password, options: { emailRedirectTo: window.location.origin + '/tools'}})
+          : await supabase.auth.signUp({ email: username, password, options: { emailRedirectTo: window.location.origin + '/tools', data: {
+            name,
+          }}})
       // If the user doesn't exist here and an error hasn't been raised yet,
       // that must mean that a confirmation email has been sent.
       // NOTE: Confirming your email address is required by default.
@@ -72,6 +79,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
+          { mode === 'SIGNUP' && <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="name">
+              Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="your name (e.g. Sam Altman)"
+              type="text"
+              autoComplete="name"
+              autoCorrect="off"
+              disabled={isLoading}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div> }
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Password

@@ -8,38 +8,43 @@ import { Database } from "@/src/types_db"
 
 type Review = Database['public']['Tables']['reviews']['Row']
 
+let formatCurrency = new Intl.NumberFormat(undefined, {
+	style: 'currency',
+	currency: 'USD'
+});
+
 export const columns: ColumnDef<Review>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "price",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Price" />
+      <DataTableColumnHeader column={column} title="Price (USD)" />
     ),
     cell: ({ row }) => <div className="w-[180px]">
-      {row.getValue("price")}
+      {formatCurrency.format(row.getValue("price"))}
     </div>,
     enableSorting: false,
     enableHiding: false,
@@ -58,7 +63,7 @@ export const columns: ColumnDef<Review>[] = [
   {
     accessorKey: "start_date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Start Date" />
+      <DataTableColumnHeader column={column} title="Contract Date" />
     ),
     cell: ({ row }) => <div className="w-[180px]">
       {row.getValue("start_date")}
@@ -69,7 +74,7 @@ export const columns: ColumnDef<Review>[] = [
   {
     accessorKey: "duration",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Duration" />
+      <DataTableColumnHeader column={column} title="Duration (month)" />
     ),
     cell: ({ row }) => <div className="w-[180px]">
       {row.getValue("duration")}

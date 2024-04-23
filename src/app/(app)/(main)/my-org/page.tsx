@@ -29,8 +29,18 @@ export default async function OrgsPage() {
   return (
     <>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-        <div>
-          My Organzation: {data.organization?.name}
+        <div className="flex items-center justify-between space-y-2">
+          <div className="min-w-[70px] mt-2">
+            <img src={`https://logo.clearbit.com/${data.organization?.domain}`} alt={data.organization?.name ?? ''} width={50} height={50} />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold tracking-tight">{data.organization?.name}</h2>
+            <p className="text-muted-foreground">
+              
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+          </div>
         </div>
         <div>
           Team:

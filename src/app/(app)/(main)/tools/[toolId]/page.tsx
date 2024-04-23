@@ -3,10 +3,24 @@ import { createServerSupabaseClient, getSession } from "@/src/lib/supabase-serve
 import { SubmitReviewDialog } from "./SubmitReivewDialog";
 import { DataTable } from "@/src/components/tables/DataTable";
 import { columns } from "./columns";
-
+import ogs from 'open-graph-scraper';
+  
 export const metadata: Metadata = {
   title: "DataEng.vc - Organizations",
 }
+
+export const getRootDomain = (url: string | null) => {
+  if (!url) return '';
+  let domain = url.split('/')[2];
+  if (!domain) {
+    console.error('No domain found for url', url)
+  }
+  if (domain?.split('.').length > 2) {
+    domain = domain.split('.').slice(1).join('.')
+  }
+  return domain;
+}
+
 
 export default async function ToolsPage(params: { params: { toolId: string }}) {
   const supabase = createServerSupabaseClient();
@@ -21,12 +35,9 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
   .eq('id', session.user.id)
   .single()
 
-console.log(user, session.user.id)
-
   if (!user || !user.organizations || !user.organization_id) {
-    return null
+    return <div>No user found</div>
   }
-
 
   const { data: tool } = await supabase.from('tools')
   .select('*, reviews (*)')
@@ -37,11 +48,22 @@ console.log(user, session.user.id)
     return <div>No Tool Found</div>
   }
   
+  // open-graph-scrape the website
+  // let ogData = null;
+  // if (tool.website) {
+  //   const options = { url: tool.website };
+  //   ogData = await ogs(options)
+  //   console.log(ogData.result)
+  // }
+
   return (
     <>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
-          <div>
+          <div className="min-w-[70px] mt-2">
+            <img src={`https://logo.clearbit.com/${getRootDomain(tool.website)}`} alt={tool.name} width={50} height={50} />
+          </div>
+          <div className="flex-1">
             <h2 className="text-2xl font-bold tracking-tight">{tool.name}</h2>
             <p className="text-muted-foreground">
               { tool.description }
@@ -55,7 +77,6 @@ console.log(user, session.user.id)
         </div>
         <DataTable data={tool.reviews ?? []} columns={columns} />
       </div>
-
     </>
   )
 }

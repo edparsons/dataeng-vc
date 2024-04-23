@@ -32,17 +32,21 @@ export default function OrgprivateKeyInput() {
     })
   }
       return !hasKey ? (
-        <div>
+        <div className="flex flex-col gap-2">
         <Label>Enter organization private key to view or add tools</Label>
         <Input id="org-privateKey" className="w-[200px]" required value={privateKey} onChange={(e) => setPrivateKey(e.currentTarget.value)} />
+        <div>
         <Button onClick={savePrivateKey}>
               Submit Private Key
            </Button>
+           </div>
         </div>
-    ) : <div>
+    ) : <div className="flex flex-col gap-2">
       <Label>Organization private key has been saved</Label>
-      <Button onClick={() => copyPrivateKey()}>
-        Copy Private Key
-      </Button>
+      <div>
+        <Button onClick={() => copyPrivateKey()}>
+          Copy Private Key
+        </Button>
+      </div>
     </div>
   }
