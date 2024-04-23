@@ -87,7 +87,7 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
           Hi {getFirstName(user.name)}, {user.organization.name} needs a private key
         </h1>
         <p className="text-sm text-muted-foreground">
-          Each organization has a private key so it can submit review annoymously. Remember to save your private key you will need it to add data to DataEng.vc. You can share it with your team.
+          Each organization has a private key so it can submit reviews anonymously. Remember to save your private key, you will need it to add data to DataEng.vc. You can share it with your team.
         </p>
       </div>
       <div className={cn("grid gap-6", className)} {...props}>
@@ -99,7 +99,7 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
               )}
               Create Key
             </Button>}
-            <div className="grid gap-1">
+            {privateKey && <div className="grid gap-1">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
@@ -135,8 +135,8 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
               </Button>
 
                 </div>}
-            </div>
-            <div className="grid gap-1">
+            </div> }
+            {/* <div className="grid gap-1">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
@@ -161,10 +161,10 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
               <Label>
                 Your public key has been saved to your organization.
               </Label>
-            </div>
-            <Button variant={hasTakenAction ? 'default' : 'secondary'} disabled={isLoading} onClick={handleContinue} className='flex-1'>
+            </div> */}
+            {privateKey && <Button variant={hasTakenAction ? 'default' : 'secondary'} disabled={isLoading} onClick={handleContinue} className='flex-1'>
               Continue
-            </Button>
+            </Button> }
           </div>
         </form>
       </div>

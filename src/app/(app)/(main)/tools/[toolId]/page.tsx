@@ -17,9 +17,11 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
   }
 
   const { data: user } = await supabase.from('users')
-  .select('*, organizations(*, users(*))')
+  .select('*, organizations!users_organization_id_fkey(*, users!users_organization_id_fkey(*))')
   .eq('id', session.user.id)
   .single()
+
+console.log(user, session.user.id)
 
   if (!user || !user.organizations || !user.organization_id) {
     return null

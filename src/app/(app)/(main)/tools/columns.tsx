@@ -12,7 +12,10 @@ export type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Dat
 export const getRootDomain = (url: string | null) => {
   if (!url) return '';
   let domain = url.split('/')[2];
-  if (domain.split('.').length > 2) {
+  if (!domain) {
+    console.error('No domain found for url', url)
+  }
+  if (domain?.split('.').length > 2) {
     domain = domain.split('.').slice(1).join('.')
   }
   return domain;
