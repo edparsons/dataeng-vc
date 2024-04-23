@@ -89,7 +89,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
       <DialogTrigger>
         <Button variant="outline">Add Review</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>
           <DialogTitle>Add review for {toolName}</DialogTitle>
           <DialogDescription>
@@ -101,7 +101,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
               control={form.control}
               name="price"
               render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
+                <FormItem className="grid grid-cols-4 items-baseline gap-x-4 space-y-0">
                   <FormLabel htmlFor="price" className="text-right">
                     Price (USD)
                   </FormLabel>
@@ -119,7 +119,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
               control={form.control}
               name="duration"
               render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
+                <FormItem className="grid grid-cols-4 items-baseline gap-x-4 space-y-0">
                   <FormLabel htmlFor="duration" className="text-right">
                     Duration (months)
                   </FormLabel>
@@ -137,9 +137,9 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
               control={form.control}
               name="start_date"
               render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
+                <FormItem className="grid grid-cols-4 items-baseline gap-x-4 space-y-0">
                   <FormLabel htmlFor="start_date" className="text-right">
-                    Start Date
+                    Contract Date
                   </FormLabel>
                   <FormControl className="col-span-3">
                     <DatePicker {...field} value={field.value ? new Date(field.value) : undefined} onSelect={field.onChange} id="start_date" />
@@ -155,7 +155,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
               control={form.control}
               name="terms"
               render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
+                <FormItem className="grid grid-cols-4 items-baseline gap-x-4 space-y-0">
                   <FormLabel htmlFor="terms" className="text-right">
                     Terms
                   </FormLabel>
