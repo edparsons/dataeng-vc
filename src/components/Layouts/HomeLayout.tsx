@@ -24,9 +24,9 @@ export const HomeLayout = ({ children}: { children: React.ReactNode }) => {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;Add a quote here.&rdquo;
+                &ldquo;Without data, you're just another person with an opinion.&rdquo;
               </p>
-              <footer className="text-sm">GPT 4</footer>
+              <footer className="text-sm">W. Edwards Deming</footer>
             </blockquote>
           </div>
         </div>
