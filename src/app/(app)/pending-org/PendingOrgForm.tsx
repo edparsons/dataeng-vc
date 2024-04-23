@@ -14,7 +14,7 @@ export function PendingOrgForm({ className, ...props }: UserAuthFormProps) {
   }
 
   useEffect(() => {
-    if (user.organization?.status !== 'pending') {
+    if (user.organization?.status === 'approved') {
       router.push('/tools')
     }
   }, [user.organization?.status])

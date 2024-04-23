@@ -53,6 +53,7 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
   const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (hasTakenAction) {
+      localStorage.setItem('private_key', privateKey)
       router.push(`/tools`)
     } else {
       alert('Please email or copy your private key before continuing')
