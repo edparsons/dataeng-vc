@@ -28,6 +28,7 @@ import { useToast } from "@/src/components/ui/use-toast";
 
 export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string, toolName: string, orgId: string }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
 
@@ -38,6 +39,7 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
       toast({
         title: 'Review added successfully'
       })
+      setIsOpen(false)
       router.refresh()
     },
     onError: () => {
@@ -85,9 +87,9 @@ export function SubmitReviewDialog({ toolId, toolName, orgId }: { toolId: string
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Review</Button>
+        <Button variant="outline" onClick={() => setIsOpen(true)}>Add Review</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>

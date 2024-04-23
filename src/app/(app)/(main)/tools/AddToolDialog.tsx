@@ -27,6 +27,7 @@ import { useToast } from "@/src/components/ui/use-toast";
 
 export function AddToolDialog() {
   const [isLoading, setIsLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
 
@@ -37,6 +38,7 @@ export function AddToolDialog() {
       toast({
         title: 'Tool added successfully'
       })
+      setIsOpen(false)
       router.refresh()
     },
     onError: () => {
@@ -64,9 +66,9 @@ export function AddToolDialog() {
     }
   }
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Tool</Button>
+        <Button variant="outline" onClick={() => setIsOpen(true)}>Add Tool</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>

@@ -43,9 +43,9 @@ export const submitReviewSchema = z.object({
 
 export const submitReviewPayloadSchema = z.object({
   terms: z.string(),
-  price: z.number(),
-  duration: z.number(),
-  start_date: z.string(),
+  price: z.coerce.number(),
+  duration: z.coerce.number(),
+  start_date: z.coerce.date(),
   tool_id: z.string(),
   organization_hash: z.string(),
 })
