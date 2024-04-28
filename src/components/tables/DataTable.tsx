@@ -59,6 +59,10 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: {
+        pageSize: 500,
+        pageIndex: 0,
+      },
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -73,14 +77,15 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
+  
   return (
     <div className="space-y-4">
       <DataTableToolbar table={table} allowFiltering={allowFiltering} filterColumnKey={filterColumnKey} filterLabel={filterLabel} />
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <Table className="relative overflow-auto">
+          <TableHeader className="sticky top-0 bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-b-0">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} colSpan={header.colSpan}>
@@ -95,7 +100,11 @@ export function DataTable<TData, TValue>({
                 })}
               </TableRow>
             ))}
+            <tr className="min-h-[1px] border-b-0">
+              <th colSpan={columns.length} className="h-[1px] bg-border absolute bottom-0 w-full pb-0"></th>
+            </tr>
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

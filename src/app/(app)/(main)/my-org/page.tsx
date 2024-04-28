@@ -48,8 +48,14 @@ export default async function OrgsPage() {
             {data.organization?.users.map((user) => (<div key={user.id}>{user.name} ({user.email})</div>))}
           </div>
         </div>
-        <OrgPasswordInput />
-        {data.organization_id && <OrgTools organizationId={data.organization_id} />}
+        { data.organization?.privacy_type === 'public' && <div>
+        {data.organization_id && <OrgTools organization={data.organization} />}
+          </div>}
+          { data.organization?.privacy_type === 'anonymous' && <div>
+        <OrgPasswordInput>
+        {data.organization_id && <OrgTools organization={data.organization} />}
+        </OrgPasswordInput>
+        </div> }
       </div>
     </>
   )

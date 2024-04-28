@@ -31,9 +31,9 @@ export default async function RootLayout({
     return redirect(`/pending-org`);
   }
 
-  if (!user.organization.public_key) {
-    return redirect(`/create-public-key`)
-  }
+  // if (!user.organization.public_key) {
+  //   return redirect(`/create-public-key`)
+  // }
 
   return (
     <>

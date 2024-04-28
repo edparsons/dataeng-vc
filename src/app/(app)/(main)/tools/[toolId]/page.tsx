@@ -61,7 +61,7 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
           </div>
         </div>
         <div>
-          <SubmitReviewDialog toolId={tool.id} orgId={user.organization_id} toolName={tool.name} />
+          <SubmitReviewDialog toolId={tool.id} toolName={tool.name} />
         </div>
         <DataTable data={tool.reviews ?? []} columns={columns} />
       </div>

@@ -25,9 +25,11 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
   const { mutate: savePublicKey } = useAction({
     action: savePublicKeyAction,
     onSuccess: () => {
+      localStorage.setItem('private_key', privateKey)
       setIsLoading(false)
     },
     onError: () => {
+      alert('Failed to save public key')
       setIsLoading(false)
     }
   })
@@ -53,9 +55,9 @@ export function PublicKeyForm({ className, ...props }: UserAuthFormProps) {
   const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (hasTakenAction) {
-      localStorage.setItem('private_key', privateKey)
       await refresh()
-      location.href = '/tools'
+      router.refresh()
+      // location.href = '/tools'
     } else {
       alert('Please email or copy your private key before continuing')
     }

@@ -10,6 +10,11 @@ export const savePublicKeySchema = z.object({
   publicKey: z.string(),
 })
 
+export const setPrivacyTypeSchema = z.object({
+  orgId: z.string(),
+  privacyType: z.string(),
+})
+
 export const toolTypes = [
   { value: "LP Tools (For LPs)", label: "LP Tools (For LPs)" },
   { value: "Traditional Data", label: "Traditional Data" },
@@ -41,11 +46,31 @@ export const submitReviewSchema = z.object({
   signature: z.string(),
 })
 
+export const contractTypes = [
+  {
+    value: "per month per user",
+    label: "Per Month Per User",
+  },
+  {
+    value: "per month",
+    label: "Per Month",
+  },
+  {
+    value: "annual per user",
+    label: "Annual Per User",
+  },
+  {
+    value: "annual",
+    label: "Annual",
+  },
+]
+
 export const submitReviewPayloadSchema = z.object({
   terms: z.string(),
   price: z.coerce.number(),
   duration: z.coerce.number(),
   start_date: z.coerce.date(),
+  type: z.enum(contractTypes.map(x => x.value) as [string, ...string[]]),
   tool_id: z.string(),
   organization_hash: z.string(),
 })

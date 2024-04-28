@@ -17,7 +17,7 @@ export function DataTableToolbar<TData>({
   table,
   filterColumnKey = "name",
   filterLabel = "tasks",
-  allowFiltering = false
+  allowFiltering = true
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 

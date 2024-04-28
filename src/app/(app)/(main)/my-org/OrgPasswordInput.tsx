@@ -1,5 +1,6 @@
 'use client';
 
+import { useSupabase } from "@/src/components/Providers/SupabaseProvider";
 import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
 import { useToast } from "@/src/components/ui/use-toast";
@@ -7,16 +8,21 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function OrgprivateKeyInput() {
-  const [hasKey,setHasKey] = useState<boolean>(false)
+export default function OrgprivateKeyInput({ children } : {children: React.ReactNode}) {
+  const [hasPrivateKey, setHasPrivateKey] = useState<boolean>(false)
   const [privateKey, setPrivateKey] = useState<string>("")
+  const { user }  = useSupabase()
   const router = useRouter()
   const { toast } = useToast()
 
   useEffect(() => {
-    const privateKey = localStorage.getItem('private_key');
-    if (privateKey) {
-      setHasKey(true)
+    if (user?.organization?.public_key) {
+      const privateKey = localStorage.getItem('private_key');
+      if (privateKey) {
+        setHasPrivateKey(true)
+      }  
+    } else {
+      // needs a public key 
     }
   }, []);
 
@@ -31,7 +37,7 @@ export default function OrgprivateKeyInput() {
       title: 'Private key copied to clipboard'
     })
   }
-      return !hasKey ? (
+      return !hasPrivateKey ? (
         <div className="flex flex-col gap-2">
         <Label>Enter organization private key to view or add tools</Label>
         <Input id="org-privateKey" className="w-[200px]" required value={privateKey} onChange={(e) => setPrivateKey(e.currentTarget.value)} />
@@ -47,6 +53,9 @@ export default function OrgprivateKeyInput() {
         <Button onClick={() => copyPrivateKey()}>
           Copy Private Key
         </Button>
+      </div>
+      <div>
+        { children }
       </div>
     </div>
   }

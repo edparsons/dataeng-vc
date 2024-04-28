@@ -15,6 +15,7 @@ export type Database = {
           domain: string
           id: string
           name: string | null
+          privacy_type: string | null
           public_key: string | null
           public_key_user: string | null
           status: string
@@ -25,6 +26,7 @@ export type Database = {
           domain: string
           id?: string
           name?: string | null
+          privacy_type?: string | null
           public_key?: string | null
           public_key_user?: string | null
           status?: string
@@ -35,6 +37,7 @@ export type Database = {
           domain?: string
           id?: string
           name?: string | null
+          privacy_type?: string | null
           public_key?: string | null
           public_key_user?: string | null
           status?: string
@@ -56,10 +59,12 @@ export type Database = {
           duration: number | null
           id: string
           organization_hash: string
+          organization_id: string | null
           price: number | null
           start_date: string | null
           terms: string | null
           tool_id: string
+          type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -67,10 +72,12 @@ export type Database = {
           duration?: number | null
           id?: string
           organization_hash: string
+          organization_id?: string | null
           price?: number | null
           start_date?: string | null
           terms?: string | null
           tool_id: string
+          type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -78,13 +85,22 @@ export type Database = {
           duration?: number | null
           id?: string
           organization_hash?: string
+          organization_id?: string | null
           price?: number | null
           start_date?: string | null
           terms?: string | null
           tool_id?: string
+          type?: string | null
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "reviews_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "reviews_tool_id_fkey"
             columns: ["tool_id"]

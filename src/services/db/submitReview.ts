@@ -23,52 +23,86 @@ export const { handler, action } = createService(
       if (!user.organization) {
         return new Error("Organization not found");
       }
-      if (!user.organization.public_key) {
-        return new Error("Organization does not have a public key");
+      console.log(user.organization)
+      if (user.organization.privacy_type === 'anonymous') {
+        if (!user.organization.public_key) {
+          return new Error("Organization does not have a public key");
+        }
+        const publicKey = _base64ToArrayBuffer(user.organization.public_key);
+        const publicKeyData = await crypto.subtle.importKey(
+          "spki", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
+          publicKey, //can be a publicKey or privateKey, as long as extractable was true
+          {
+            name: "RSASSA-PKCS1-v1_5",
+            hash: "SHA-256",
+          },
+          true,
+          ["verify"],
+        )
+      
+        const enc = new TextEncoder();
+        const deSign = _base64ToArrayBuffer(signature);
+  
+        const isValid = await crypto.subtle.verify(
+          "RSASSA-PKCS1-v1_5",
+          publicKeyData,
+          deSign,
+          enc.encode(payload)
+        );
+  
+        if (!isValid) {
+          throw new Error("Invalid signature");
+        }
+  
+        const payloadParse = submitReviewPayloadSchema.safeParse(JSON.parse(payload))
+  
+        if (!payloadParse.success) {
+          throw new Error("Invalid payload");
+        } 
+  
+        const payloadData = payloadParse.data;
+  
+        // Upsert the review
+        const { data: review, error } = await supabaseService.from("reviews").upsert({
+          ...payloadData,
+          start_date: payloadData.start_date.toISOString(),
+        }, {
+          onConflict: 'organization_hash,tool_id',
+        }).select('*').single();
+
+        if (error) {
+          throw error;
+        }
+  
+        return review;  
+      } else if (user.organization.privacy_type === 'public') {
+        const payloadParse = submitReviewPayloadSchema.safeParse(JSON.parse(payload))
+  
+        if (!payloadParse.success) {
+          throw new Error("Invalid payload");
+        } 
+  
+        const payloadData = payloadParse.data;
+  
+        // Upsert the review
+        const { data: review, error } = await supabaseService.from("reviews").upsert({
+          ...payloadData,
+          organization_id: user.organization.id,
+          organization_hash: '',
+          start_date: payloadData.start_date.toISOString(),
+        }, {
+          onConflict: 'organization_id,tool_id',
+        }).select('*').single();
+
+        if (error) {
+          throw error;
+        }
+
+        console.log(review, error)
+  
+        return review;  
+      } else {
+        return new Error("Invalid privacy type");
       }
-
-      const publicKey = _base64ToArrayBuffer(user.organization.public_key);
-      const publicKeyData = await crypto.subtle.importKey(
-        "spki", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
-        publicKey, //can be a publicKey or privateKey, as long as extractable was true
-        {
-          name: "RSASSA-PKCS1-v1_5",
-          hash: "SHA-256",
-        },
-        true,
-        ["verify"],
-      )
-    
-      const enc = new TextEncoder();
-      const deSign = _base64ToArrayBuffer(signature);
-
-      const isValid = await crypto.subtle.verify(
-        "RSASSA-PKCS1-v1_5",
-        publicKeyData,
-        deSign,
-        enc.encode(payload)
-      );
-
-      if (!isValid) {
-        throw new Error("Invalid signature");
-      }
-
-      const payloadParse = submitReviewPayloadSchema.safeParse(JSON.parse(payload))
-
-      if (!payloadParse.success) {
-        throw new Error("Invalid payload");
-      } 
-
-      const payloadData = payloadParse.data;
-
-      // Upsert the review
-      const { data: review, error } = await supabaseService.from("reviews").upsert({
-        ...payloadData,
-        start_date: payloadData.start_date.toISOString(),
-      }, {
-        onConflict: 'organization_hash,tool_id',
-      }).select('*').single();
-
-      return review;
     }
 )
