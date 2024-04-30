@@ -54,7 +54,7 @@ export default function IndexPage() {
           </CardHeader>
           <CardContent>
             <div>Using the tools database organizations can anonymously or publically share what tools they use and the price of the contract.</div>
-            <div>Through the aggregation of these contracts we aim to provide benchmarking data so future members can have more information going into negations with vendors.</div>
+            <div>Through the aggregation of these contracts we aim to provide benchmarking data so future members can have more information going into negotiations with vendors.</div>
           </CardContent>
           <CardFooter>
             <p className="text-sm text-muted-foreground">
