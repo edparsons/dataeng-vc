@@ -5,6 +5,7 @@ import { DataTable } from "@/src/components/tables/DataTable";
 import { columns } from "./columns";
 import ogs from 'open-graph-scraper';
 import { getRootDomain } from "@/src/lib/utils";
+import Link from "next/link";
   
 export const metadata: Metadata = {
   title: "DataEng.vc - Organizations",
@@ -46,7 +47,7 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
 
   return (
     <>
-      <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
           <div className="min-w-[70px] mt-2">
             <img src={`https://logo.clearbit.com/${getRootDomain(tool.website)}`} alt={tool.name} width={50} height={50} />
@@ -55,6 +56,9 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
             <h2 className="text-2xl font-bold tracking-tight">{tool.name}</h2>
             <p className="text-muted-foreground">
               { tool.description }
+            </p>
+            <p className="text-sm text-muted-foreground">
+              <Link target={'_blank'} href={tool.website}>{ tool.website }</Link>
             </p>
           </div>
           <div className="flex items-center space-x-2">

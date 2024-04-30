@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 export const linkCn =
   'flex items-center text-sm font-medium text-muted-foreground relative whitespace-nowrap py-3';
 // item.disabled && "cursor-not-allowed opacity-80"
-const linkActive =
+export const linkActive =
   'text-primary before:absolute before:border-b-2  before:border-b-black before:block before:h-0.25 before:rounded-full before:bottom-0 before:left-0 before:right-0';
 export default function NavButtons() {
   const pathname = usePathname();
