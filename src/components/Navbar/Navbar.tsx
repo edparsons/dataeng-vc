@@ -4,9 +4,11 @@ import Link from 'next/link';
 import NavButtons from './NavButtons';
 import MobileNav from './MobileNav';
 import { useSupabase } from '../Providers/SupabaseProvider';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-  const { user } = useSupabase();
+  const { user, supabase } = useSupabase();
+  const router = useRouter();
 
   return (
     <nav
@@ -14,8 +16,8 @@ export default function Navbar() {
       <a className="sr-only focus:not-sr-only" href="#skip">
         Skip to content
       </a>
-      <div className="px-6 mx-auto">
-        <div className="flex h-10 items-center px-4">
+      <div className="px-2 md:px-8 mx-auto">
+        <div className="flex h-10 items-center">
           <div className="flex items-center flex-1">
             <Link
               aria-label="Logo"
@@ -44,7 +46,10 @@ export default function Navbar() {
               <MobileNav />
             </div>
             <div className="hidden lg:flex justify-center items-center space-x-4">
-              { user ? user.name : <Link className={''} href="/signin">
+              { user ? <span className='cursor-pointer' onClick={async () => {
+                await supabase.auth.signOut();
+                router.push('/sign-in');
+              }}>{ user.name }</span> : <Link className={''} href="/signin">
                 Sign in
               </Link> }
             </div>

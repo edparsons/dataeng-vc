@@ -81,8 +81,8 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <DataTableToolbar table={table} allowFiltering={allowFiltering} filterColumnKey={filterColumnKey} filterLabel={filterLabel} />
-      <div className="rounded-md border">
-        <Table className="relative overflow-auto">
+      <div className="rounded-md border overflow-auto">
+        <Table className="relative">
           <TableHeader className="sticky top-0 bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="border-b-0">

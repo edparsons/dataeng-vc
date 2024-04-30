@@ -45,7 +45,7 @@ export const columns: ColumnDef<Tool>[] = [
       <Link href={`/tools/${row.original.id}/`}>
         <img
           className="h-12 w-12 object-cover"
-          src={`https://logo.clearbit.com/${getRootDomain(row.original.website)}`}
+          src={row.original.logo || `https://logo.clearbit.com/${getRootDomain(row.original.website)}`}
         />
       </Link></div>,
     enableSorting: false,

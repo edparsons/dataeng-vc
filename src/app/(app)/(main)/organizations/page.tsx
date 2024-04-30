@@ -16,7 +16,7 @@ export default async function OrgsPage() {
 
   return (
     <>
-      <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="h-full flex-1 flex-col space-y-8 p-2 md:p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Organizations</h2>
@@ -27,7 +27,7 @@ export default async function OrgsPage() {
           <div className="flex items-center space-x-2">
           </div>
         </div>
-        <DataTable data={data ?? []} columns={columns} filterLabel="organizatins" />
+        <DataTable data={data ?? []} columns={columns} filterLabel="organizations" />
       </div>
     </>
   )
