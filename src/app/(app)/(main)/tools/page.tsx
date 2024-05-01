@@ -1,9 +1,8 @@
 import { Metadata } from "next"
-import Image from "next/image"
 
 import { DataTable } from "@/src/components/tables/DataTable"
 import { createServerSupabaseClient } from "@/src/lib/supabase-server"
-import { Tool, columns } from "./columns"
+import { Tool, columns, rowClick } from "./columns"
 import { AddToolDialog } from "./AddToolDialog"
 
 export const metadata: Metadata = {
@@ -31,7 +30,12 @@ export default async function ToolsPage() {
         <div>
           <AddToolDialog />
         </div>
-        <DataTable data={tools ?? []} columns={columns} filterLabel="tools" />
+        <DataTable 
+          data={tools ?? []} 
+          columns={columns}
+          filterLabel="tools"
+          rowOnClick={rowClick}
+          />
       </div>
     </>
   )

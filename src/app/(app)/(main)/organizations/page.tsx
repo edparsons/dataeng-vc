@@ -1,9 +1,8 @@
 import { Metadata } from "next"
-import Image from "next/image"
 
 import { DataTable } from "@/src/components/tables/DataTable"
 import { createServerSupabaseClient } from "@/src/lib/supabase-server"
-import { columns } from "./columns"
+import { columns, rowClick } from "./columns"
 
 export const metadata: Metadata = {
   title: "DataEng.vc - Organizations",
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 export default async function OrgsPage() {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase.from('organizations').select('*').eq('status', 'approved');
-
 
   return (
     <>
@@ -27,7 +25,12 @@ export default async function OrgsPage() {
           <div className="flex items-center space-x-2">
           </div>
         </div>
-        <DataTable data={data ?? []} columns={columns} filterLabel="organizations" />
+        <DataTable
+          data={data ?? []}
+          columns={columns}
+          filterLabel="organizations"
+          rowOnClick={rowClick}
+        />
       </div>
     </>
   )

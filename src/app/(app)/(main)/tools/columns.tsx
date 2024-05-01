@@ -7,9 +7,13 @@ import { DataTableColumnHeader } from "@/src/components/tables/DataTableColumnHe
 import { Database } from "@/src/types_db"
 import Link from "next/link"
 import { formatCurrency, getRootDomain } from "@/src/lib/utils"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 export type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Database['public']['Tables']['reviews']['Row'][] }
 
+export const rowClick = (row: Tool, router: AppRouterInstance) => {
+  router.push(`/tools/${row.id}`)
+}
 
 export const columns: ColumnDef<Tool>[] = [
   // {

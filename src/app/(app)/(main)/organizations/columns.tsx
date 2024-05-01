@@ -6,10 +6,15 @@ import { Checkbox } from "@/src/components/ui/checkbox"
 import { DataTableColumnHeader } from "@/src/components/tables/DataTableColumnHeader"
 import { Database } from "@/src/types_db"
 import Link from "next/link"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
-type User = Database['public']['Tables']['organizations']['Row']
+type Org = Database['public']['Tables']['organizations']['Row']
 
-export const columns: ColumnDef<User>[] = [
+export const rowClick = (row: Org, router: AppRouterInstance) => {
+  router.push(`/organizations/${row.id}`)
+}
+
+export const columns: ColumnDef<Org>[] = [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -40,7 +45,7 @@ export const columns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Logo" />
     ),
     cell: ({ row }) => <div className="w-[100px]">
-      <Link href={`/tools/${row.original.id}/`}>
+      <Link href={`/organizations/${row.original.id}/`}>
         <img
           className="h-12 w-12 object-cover"
           src={`https://logo.clearbit.com/${row.original.domain}`}
@@ -65,7 +70,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Domain" />
     ),
-    cell: ({ row }) => <div className="w-[180px]">{row.getValue("domain")}</div>,
+    cell: ({ row }) => <div className="w-[180px]"><Link href={`https://${row.getValue("domain")}`}>{row.getValue("domain")}</Link></div>,
     enableSorting: false,
     enableHiding: false,
   },

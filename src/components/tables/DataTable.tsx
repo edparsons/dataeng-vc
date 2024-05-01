@@ -27,6 +27,8 @@ import {
 
 import { DataTablePagination } from "./DataTablePagination"
 import { DataTableToolbar } from "./DataTableToolbar"
+import { useRouter } from "next/navigation"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -34,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   filterColumnKey?: string
   filterLabel?: string
   allowFiltering?: boolean
+  rowOnClick?: (row: TData, router: AppRouterInstance) => void // router is passed back to the onClick in case the component above DataTable is server side rendered in which case importing useRouter will not work
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +45,7 @@ export function DataTable<TData, TValue>({
   filterColumnKey,
   filterLabel,
   allowFiltering,
+  rowOnClick,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -50,6 +54,7 @@ export function DataTable<TData, TValue>({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const router = useRouter()
 
   const table = useReactTable({
     data,
@@ -111,6 +116,9 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    rowOnClick?.(row.original, router)
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
