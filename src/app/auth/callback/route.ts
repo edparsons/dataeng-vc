@@ -17,6 +17,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${requestUrl.origin}/tools`);
   }
 
+  const error = requestUrl.searchParams.get('error');
+  if (error) {
+    return NextResponse.redirect(`${requestUrl.origin}/sign-in`);
+  }
+
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(requestUrl.origin);
 }

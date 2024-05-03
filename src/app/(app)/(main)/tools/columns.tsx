@@ -8,6 +8,8 @@ import { Database } from "@/src/types_db"
 import Link from "next/link"
 import { formatCurrency, getRootDomain } from "@/src/lib/utils"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import { User } from "@/src/components/Providers/SupabaseProvider"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip"
 
 export type Tool = Database['public']['Tables']['tools']['Row'] & { reviews: Database['public']['Tables']['reviews']['Row'][] }
 
@@ -15,7 +17,7 @@ export const rowClick = (row: Tool, router: AppRouterInstance) => {
   router.push(`/tools/${row.id}`)
 }
 
-export const columns: ColumnDef<Tool>[] = [
+export const columns: (user: User | undefined | null) => ColumnDef<Tool>[] = (user) => ([
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -108,7 +110,15 @@ export const columns: ColumnDef<Tool>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Organizations" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.original.reviews?.length}</div>,
+    cell: ({ row }) => <div className="w-[80px]">
+      { user?.organization?.hasReviews ?
+      row.original.reviews?.length : <Tooltip>
+      <TooltipTrigger>--</TooltipTrigger>
+      <TooltipContent>
+        <p>You must submit at least 1 rating before seeing this data</p>
+      </TooltipContent>
+    </Tooltip> }
+    </div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -117,12 +127,19 @@ export const columns: ColumnDef<Tool>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Average Price (USD)" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{
-      row.original.reviews?.length > 0 ? (
-        formatCurrency.format(row.original.reviews.reduce((acc, review) => acc + (review.price || 0), 0) / row.original.reviews.length)
-      ) : ''
-    }</div>,
+    cell: ({ row }) => <div className="w-[80px]">
+      { user?.organization?.hasReviews ?
+        row.original.reviews?.length > 0 ? (
+          formatCurrency.format(row.original.reviews.reduce((acc, review) => acc + (review.price || 0), 0) / row.original.reviews.length)
+        ) : ''
+      : <Tooltip>
+      <TooltipTrigger>--</TooltipTrigger>
+      <TooltipContent>
+        <p>You must submit at least 1 rating before seeing this data</p>
+      </TooltipContent>
+    </Tooltip> }
+    </div>,
     enableSorting: false,
     enableHiding: false,
   },
-]
+])

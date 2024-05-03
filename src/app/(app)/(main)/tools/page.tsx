@@ -1,9 +1,9 @@
 import { Metadata } from "next"
 
-import { DataTable } from "@/src/components/tables/DataTable"
 import { createServerSupabaseClient } from "@/src/lib/supabase-server"
-import { Tool, columns, rowClick } from "./columns"
+import { Tool } from "./columns"
 import { AddToolDialog } from "./AddToolDialog"
+import { Table } from "./Table"
 
 export const metadata: Metadata = {
   title: "DataEng.vc - Tools",
@@ -13,6 +13,7 @@ export default async function ToolsPage() {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase.from('tools').select('*, reviews (id, price)').eq('status', 'approved').order('name');
   const tools = data as Tool[];
+
 
   return (
     <>
@@ -30,12 +31,7 @@ export default async function ToolsPage() {
         <div>
           <AddToolDialog />
         </div>
-        <DataTable 
-          data={tools ?? []} 
-          columns={columns}
-          filterLabel="tools"
-          rowOnClick={rowClick}
-          />
+        <Table tools={tools} />
       </div>
     </>
   )

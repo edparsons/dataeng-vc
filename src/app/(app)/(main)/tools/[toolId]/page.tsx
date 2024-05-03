@@ -1,11 +1,13 @@
 import { Metadata } from "next"
-import { createServerSupabaseClient, getSession } from "@/src/lib/supabase-server"
+import { createServerSupabaseClient, getSession, getUser } from "@/src/lib/supabase-server"
 import { SubmitReviewDialog } from "./SubmitReivewDialog";
 import { DataTable } from "@/src/components/tables/DataTable";
 import { columns } from "./columns";
 import ogs from 'open-graph-scraper';
 import { getRootDomain } from "@/src/lib/utils";
 import Link from "next/link";
+import HasPrivateKey from "../../my-org/HasPrivateKey";
+import OrgprivateKeyInput from "../../my-org/OrgPasswordInput";
   
 export const metadata: Metadata = {
   title: "DataEng.vc - Organizations",
@@ -13,19 +15,10 @@ export const metadata: Metadata = {
 
 export default async function ToolsPage(params: { params: { toolId: string }}) {
   const supabase = createServerSupabaseClient();
-  const session = await getSession();
+  const user = await getUser();
 
-  if (!session) {
+  if (!user) {
     return null
-  }
-
-  const { data: user } = await supabase.from('users')
-  .select('*, organizations!public_users_organization_id_fkey(*, users!public_users_organization_id_fkey(*))')
-  .eq('id', session.user.id)
-  .single()
-
-  if (!user || !user.organizations || !user.organization_id) {
-    return <div>No user found</div>
   }
 
   const { data: tool } = await supabase.from('tools')
@@ -65,9 +58,19 @@ export default async function ToolsPage(params: { params: { toolId: string }}) {
           </div>
         </div>
         <div>
-          <SubmitReviewDialog toolId={tool.id} toolName={tool.name} />
+          <OrgprivateKeyInput>
+            <SubmitReviewDialog toolId={tool.id} toolName={tool.name} />
+          </OrgprivateKeyInput>
         </div>
-        <DataTable data={tool.reviews ?? []} columns={columns} />
+        <HasPrivateKey
+          hasReviews={true}
+          hasReviewsFallback={<div>
+            <span>You must add at least one rating before seeing others.</span>
+            <DataTable data={[]} columns={columns} />
+          </div>}
+        >
+          <DataTable data={tool.reviews ?? []} columns={columns} />
+        </HasPrivateKey>
       </div>
     </>
   )

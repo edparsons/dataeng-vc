@@ -1,25 +1,40 @@
 'use client';
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/src/lib/utils'
 import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
 import { Label } from "@/src/components/ui/label"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useSupabase } from "@/src/components/Providers/SupabaseProvider"
 import { Spinner } from '@phosphor-icons/react';
+import { AlertCircle } from "lucide-react"
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/src/components/ui/alert"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter()
+  const params = useParams();
   const { supabase } = useSupabase()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
   const [name, setName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [mode, setMode] = useState<'LOGIN' | 'SIGNUP'>('LOGIN')
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.hash);
+    if (params.has('error_description')) {
+      setError(params.get('error_description'))
+    }
+  }, [params]);
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -27,6 +42,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       alert('Please enter your name')
       return
     }
+    setError(null)
     setIsLoading(true)
     try {
       const { error, data: { user } } =
@@ -41,21 +57,29 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // NOTE: Confirming your email address is required by default.
       if (error) {
         alert('Error with auth: ' + error.message)
+        setIsLoading(false)
       } else if (!user || !user.email_confirmed_at) {
         alert('Signup successful, confirmation mail should be sent soon!')
+        setIsLoading(false)
       } else {
         router.push('/tools')
       }
     } catch (error) {
       console.log('error', error)
       alert((error as any).error_description || error)
-    } finally {
       setIsLoading(false)
     }
   }
 
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+    { error && <Alert variant="destructive">
+      <AlertCircle className="h-4 w-4" />
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>
+        { error }
+      </AlertDescription>
+    </Alert> }
     <div className="flex flex-col space-y-2 text-center">
       <h1 className="text-2xl font-semibold tracking-tight">
         { mode === 'SIGNUP' ? 'Create an account' : 'Login to your account' }
