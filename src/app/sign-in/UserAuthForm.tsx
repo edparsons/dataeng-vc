@@ -61,8 +61,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       } else if (!user || !user.email_confirmed_at) {
         alert('Signup successful, confirmation mail should be sent soon!')
         setIsLoading(false)
-      } else {
-        router.push('/tools')
       }
     } catch (error) {
       console.log('error', error)

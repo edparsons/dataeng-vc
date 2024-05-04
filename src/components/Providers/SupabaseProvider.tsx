@@ -4,7 +4,7 @@ import { signMessage } from '@/src/lib/browser-crypto';
 import type { Database } from '../../types_db';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { UserResponse } from '@supabase/supabase-js';
+import { AuthChangeEvent, UserResponse } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import {
   createContext,
@@ -41,7 +41,7 @@ export default function SupabaseProvider({
     (window as any).supabase = supabase;
   }
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (event?: AuthChangeEvent) => {
     const user = await supabase.auth.getUser();
     let userData: User | null = null
     setAuthUser(user.data.user);
@@ -87,7 +87,7 @@ export default function SupabaseProvider({
     } else {
       setUser(null);
     }
-    if (window.location.pathname === '/' && userData) {
+    if ((window.location.pathname === '/' && userData) || (window.location.pathname === '/sign-in' || event === 'SIGNED_IN')) {
       router.push('/tools');
     } else {
       router.refresh();
@@ -97,8 +97,8 @@ export default function SupabaseProvider({
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async () => {
-      refresh();
+    } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent) => {
+      refresh(event);
     });
 
     return () => {
