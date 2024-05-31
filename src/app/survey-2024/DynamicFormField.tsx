@@ -121,7 +121,7 @@ export function DynamicFormField<TFieldValues extends FieldValues>({ _key, form,
                                 items={suggestions}
                                 placeholder="Select an option"
                                 value={field.value}
-                                setValue={(val: string) => {
+                                setValue={(val) => {
                                     field.onChange(val)
                                 }}
                             />
