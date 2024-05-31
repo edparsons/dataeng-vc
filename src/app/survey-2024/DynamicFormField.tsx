@@ -191,9 +191,9 @@ export function DynamicFormField<TFieldValues extends FieldValues>({ _key, form,
                                 <div key={option} className="flex items-center space-x-2">
                                     <Checkbox
                                         id={`checkbox-${option}`}
+                                        name={`checkbox-${option}`}
                                         checked={includes(field.value, option)}
                                         onCheckedChange={() => {
-                                            debugger;
                                             const newValue = includes(field.value, option)
                                                 ? field.value.filter((v: any) => v !== option)
                                                 : [...(field?.value ?? []), option];

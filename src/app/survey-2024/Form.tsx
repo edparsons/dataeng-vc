@@ -78,7 +78,7 @@ export const Form = () => {
                                 <Card>
                 <CardHeader><div className="flex flex-row justify-between items-center">
                     <div>
-                    Tool #{index + 1} {data.tools?.[index].toolVendor}
+                    Tool #{index + 1}{data.tools?.[index]?.toolVendor ? `: ${data.tools?.[index]?.toolVendor}` : ''}
                     </div>
                     <Button>Finish</Button>
                     </div>
