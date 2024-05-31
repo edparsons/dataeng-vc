@@ -3,9 +3,11 @@
 import { Button } from '@/src/components/ui/button';
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/src/components/ui/command';
 import {
   Popover,
@@ -17,46 +19,21 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 
-interface Props<T extends { id: string | number }> {
-  getItems: (search: string) => Promise<T[]>;
-  renderItem: (item: T) => React.ReactNode;
-  value: T | undefined | null;
-  setValue: (item: T | undefined | null) => void;
-  emptyText?: (value: string) => string;
-  selectEmptyText?: (searchText: string) => void;
+interface Props {
+  items: string[];
+  value: string | undefined | null;
+  setValue: (item: string | undefined | null) => void;
   placeholder?: string;
 }
 
-export function Combobox<T extends { id: string | number }>(props: Props<T>) {
+export function Combobox(props: Props) {
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [items, setItems] = React.useState<T[]>([]);
   const [search, setSearch] = React.useState('');
-  const debouncedSearch = useDebounce(search, 500);
 
-  // todo wrap in useQuery
-  const getItems = async (search: string) => {
-    setLoading(true);
-    setItems([]);
-    const res = await props.getItems(search);
-    setItems(res);
-    setLoading(false);
-  };
-
-  React.useEffect(() => {
-    getItems(debouncedSearch);
-  }, [debouncedSearch]);
-
-  const getLabel = () => {
-    return props.value
-      ? props.renderItem(props.value)
-      : props.placeholder
-      ? props.placeholder
-      : 'Select...';
-  };
+  const items = props.items
 
   const setValue = (value: string) => {
-    props.setValue(items.find(item => item.id == value));
+    props.setValue(value);
     setOpen(false);
   };
 
@@ -70,59 +47,55 @@ export function Combobox<T extends { id: string | number }>(props: Props<T>) {
           onFocus={e => e.preventDefault()}
           role="combobox"
           variant="outline">
-          {getLabel()}
+          { props.value ? props.value : props.placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[400px] p-0">
-        <Command shouldFilter={false}>
+        <Command onKeyDown={(e) => {
+      // Escape goes to previous page
+      // Backspace goes to previous page when search is empty
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        setValue(search)
+      }
+      if (e.key === 'ArrowLeft') {
+        e.stopPropagation()
+        }
+        if (e.key === 'ArrowRight') {
+          e.stopPropagation()
+          }
+    }}>
           <CommandInput
             onValueChange={setSearch}
-            placeholder="Search for contact..."
+            placeholder={props.placeholder}
             value={search}
+            
           />
-          {
-            loading ? (
-              <CommandItem>
-                <div className="px-2 py-1.5 text-center text-sm">
-                  Fetching contacts...
-                </div>
-              </CommandItem>
-            ) : null
-            // <CommandEmpty onSelect={() => {props.selectEmptyText?.(search)}}>asdf{props.emptyText ? props.emptyText(search) : 'No contact found.'}</CommandEmpty>
-          }
-          <CommandGroup>
-            {items.map(item => {
-              return (
-                <CommandItem
-                  key={item.id}
-                  onSelect={currentValue => {
-                    setValue(currentValue);
-                  }}
-                  value={
-                    typeof item.id === 'number' ? item.id.toString() : item.id
-                  }>
-                  <Check
-                    className={cn(
-                      'mr-1 h-2 w-2 min-w-2 flex-shrink-0',
-                      props.value?.id === item.id ? 'opacity-100' : 'opacity-0',
-                    )}
-                  />
-                  {props.renderItem(item)}
-                </CommandItem>
-              );
-            })}
-            {!loading && items.length === 0 ? (
-              <CommandItem
-                onSelect={() => {
-                  props.selectEmptyText?.(search);
-                }}>
-                {props.emptyText
-                  ? props.emptyText(search)
-                  : 'No contact found.'}
-              </CommandItem>
-            ) : null}
-          </CommandGroup>
+          <CommandList>
+            <CommandGroup>
+              {items.map(item => {
+                return (
+                  <CommandItem
+                    key={item}
+                    onSelect={currentValue => {
+                      setValue(currentValue);
+                    }}
+                    value={
+                      item
+                    }>
+                    <Check
+                      className={cn(
+                        'mr-1 h-2 w-2 min-w-2 flex-shrink-0',
+                        props.value === item ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
+                    {item}
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
