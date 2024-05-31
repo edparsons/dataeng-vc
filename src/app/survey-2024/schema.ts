@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
 export const FirmSchema = z.object({
+  firmName: z.string().describe(JSON.stringify({ label: "Firm Name", description: "Name of your firm" })),
+  yourName: z.string().describe(JSON.stringify({ label: "Your Name", description: "Your name" })),
+  yourEmail: z.string().email().describe(JSON.stringify({ label: "Your Email", description: "Your email" })),
   aum: z.enum(['< $100M', '$100M - $500M', '$500M - 1B', '> $1B']).describe(JSON.stringify({ label: "AUM", description: "What is the AUM of your firm?" })),
   firmSize: z.enum(['<= 10', '11-20', '21-50', '50+']).describe(JSON.stringify({ label: "Firm Size", description: "What is the size of your firm?" })),
   strikeZone: z.array(z.enum(['Pre-seed', 'Seed', 'Series A', 'Series B', 'Series C', 'Series D+'])).describe(JSON.stringify({ label: "Strike Zone", description: "What stages does your firm invest in?" })),
