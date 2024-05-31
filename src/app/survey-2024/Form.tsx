@@ -4,17 +4,35 @@ import * as React from "react"
 
 import { FirmForm } from "./FirmForm"
 import { ToolsForm } from "./ToolsForm"
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/src/components/ui/carousel";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/src/components/ui/carousel";
 import { Card, CardHeader, CardContent } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
+import { createClient } from "@supabase/supabase-js"
+import { Database } from "@/src/types_db";
+import { env } from "@/src/env";
+
+const supabase = createClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 export const Form = () => {
     const [api, setApi] = React.useState<CarouselApi>()
     const [currentIndex, setCurrentIndex] = React.useState(0)
   const [maxIndex, setMaxIndex] = React.useState(1)
   const [data, setData] = React.useState<Record<string, any>>({})
+  const [tools, setTools] = React.useState<Database['public']['Tables']['tools']['Row'][]>([])
 
- 
+  React.useEffect(() => {
+    const fetchTools = async () => {
+      const { data: tools, error } = await supabase.from('tools').select()
+      if (error) {
+        console.error('Error fetching tools:', error)
+        return
+      }
+      setTools(tools ?? [])
+    }
+    fetchTools()
+  }, []);
+
+
   React.useEffect(() => {
     if (!api) {
       return
@@ -66,7 +84,7 @@ export const Form = () => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                <ToolsForm submit={submit} index={index} data={data.tools?.[index]} back={() => {
+                <ToolsForm submit={submit} index={index} data={data.tools?.[index]} tools={tools} back={() => {
                     // index is already 1 less as index is just counting tools, and scroll to is counting slides
                     api?.scrollTo(index)
                     setCurrentIndex(index)

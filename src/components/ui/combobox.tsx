@@ -16,6 +16,7 @@ import {
 } from '@/src/components/ui/popover';
 import { cn } from '@/src/lib/utils';
 import { useDebounce } from '@uidotdev/usehooks';
+import { useCommandState } from 'cmdk';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 
@@ -26,10 +27,18 @@ interface Props {
   placeholder?: string;
 }
 
+function Empty({setIsEmpty}: {setIsEmpty: (isEmpty: boolean) => void}) {
+  const isEmpty = useCommandState((state) => state.filtered.count === 0)
+  React.useEffect(() => {
+    setIsEmpty(isEmpty)
+  }, [isEmpty])
+  return null
+}
+
 export function Combobox(props: Props) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
-
+  const [isEmpty, setIsEmpty] = React.useState(false);
   const items = props.items
 
   const setValue = (value: string) => {
@@ -55,8 +64,7 @@ export function Combobox(props: Props) {
         <Command onKeyDown={(e) => {
       // Escape goes to previous page
       // Backspace goes to previous page when search is empty
-      if (e.key === 'Enter') {
-        e.preventDefault()
+      if (e.key === 'Enter' && isEmpty) {
         setValue(search)
       }
       if (e.key === 'ArrowLeft') {
@@ -70,8 +78,8 @@ export function Combobox(props: Props) {
             onValueChange={setSearch}
             placeholder={props.placeholder}
             value={search}
-            
           />
+          <Empty setIsEmpty={setIsEmpty} />
           <CommandList>
             <CommandGroup>
               {items.map(item => {

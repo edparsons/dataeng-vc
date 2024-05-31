@@ -17,8 +17,6 @@ export function FirmForm({ submit }: { submit: (data: any) => void }){
     const form = useForm<z.infer<typeof FirmSchema>>({
         resolver: zodResolver(FirmSchema),
         defaultValues: {
-            aum: "< $100M",
-            firmSize: "<= 10",
             strikeZone: [],
             investmentGeos: [],
             technologyTeamSize: {
@@ -26,15 +24,6 @@ export function FirmForm({ submit }: { submit: (data: any) => void }){
                 dataProfessionals: 0,
                 engineeringProfessionals: 0
             },
-                "dataUsage": {
-                  "sourcing": "We don’t use data for sourcing",
-                  "picking": "We don’t use data for picking",
-                  "winning": "We don’t use data for winning",
-                  "supportingPortcos": "We don’t use data for supporting Portcos",
-                  "lpRelations": "We don’t use data for LP Relations"
-                },
-                "programmaticInvestment": "yes",
-            programmaticDealFlowPercentage: 0,
         }
     });
 

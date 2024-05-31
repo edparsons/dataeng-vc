@@ -1,9 +1,10 @@
+import { Database } from '@/src/types_db';
 import { z } from 'zod';
 
 export const FirmSchema = z.object({
-  firmName: z.string().describe(JSON.stringify({ label: "Firm Name", description: "Name of your firm" })),
-  yourName: z.string().describe(JSON.stringify({ label: "Your Name", description: "Your name" })),
-  yourEmail: z.string().email().describe(JSON.stringify({ label: "Your Email", description: "Your email" })),
+  firmName: z.string().describe(JSON.stringify({ label: "Firm Name", description: "Name of your firm" })).optional(),
+  yourName: z.string().describe(JSON.stringify({ label: "Your Name", description: "Your name" })).optional(),
+  yourEmail: z.string().email().describe(JSON.stringify({ label: "Your Email", description: "Your email" })).optional(),
   aum: z.enum(['< $100M', '$100M - $500M', '$500M - 1B', '> $1B']).describe(JSON.stringify({ label: "AUM", description: "What is the AUM of your firm?" })),
   firmSize: z.enum(['<= 10', '11-20', '21-50', '50+']).describe(JSON.stringify({ label: "Firm Size", description: "What is the size of your firm?" })),
   strikeZone: z.array(z.enum(['Pre-seed', 'Seed', 'Series A', 'Series B', 'Series C', 'Series D+'])).describe(JSON.stringify({ label: "Strike Zone", description: "What stages does your firm invest in?" })),
@@ -24,8 +25,8 @@ export const FirmSchema = z.object({
   programmaticInvestment: z.enum(['yes', 'no']).describe(JSON.stringify({ label: "Programmatic Investment", description: "Has the firm made a programmatically sourced investment?" })),
   programmaticDealFlowPercentage: z.number().min(0).max(100).describe(JSON.stringify({ label: "Programmatic Deal Flow Percentage", description: "What percentage of your deal flow is programmatically sourced?" }))
 });
-export const ToolsAndVendorsSchema = z.object({
-  toolVendor: z.string().describe(JSON.stringify({ label: "Tool Vendor", description: "Name of the tool or vendor", suggestions: ['Tool 1', 'Tool 2'] })),
+export const getToolsAndVendorsSchema = (tools: Database['public']['Tables']['tools']['Row'][]) => z.object({
+  toolVendor: z.string().describe(JSON.stringify({ label: "Tool Vendor", description: "Name of the tool or vendor", suggestions: tools.map(tool => tool.name) })),
   primaryDomain: z.enum(['Traditional Data', 'Alternative Data', 'Research', 'Deal CRM', 'Talent / Network CRM', 'Matchmaking Tools', 'Portfolio Management', 'News Resources', 'Scouting Sources']).describe(JSON.stringify({ label: "Primary Domain", description: "Primary domain of the tool or vendor" })),
   secondaryDomains: z.array(z.enum(['Traditional Data', 'Alternative Data', 'Research', 'Deal CRM', 'Talent / Network CRM', 'Matchmaking Tools', 'Portfolio Management', 'News Resources', 'Scouting Sources'])).describe(JSON.stringify({ label: "Secondary Domains", description: "Secondary domains of the tool or vendor, if any" })).optional(),
   nps: z.number().min(1).max(10).describe(JSON.stringify({ label: "NPS", description: "Net Promoter Score (NPS) of the tool or vendor" })),

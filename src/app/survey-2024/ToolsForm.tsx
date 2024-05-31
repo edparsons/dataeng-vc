@@ -9,22 +9,17 @@ import {
     Form,
 } from "@/src/components/ui/form";
 import { toast } from "@/src/components/ui/use-toast";
-import { ToolsAndVendorsSchema } from "./schema";
+import { getToolsAndVendorsSchema } from "./schema";
 import { DynamicFormField } from "./DynamicFormField";
+import { Database } from "@/src/types_db";
 
-export function ToolsForm({ submit, index, data, back }: { submit: (data: any) => void, index: number, data: any, back: () => void}){
+export function ToolsForm({ submit, index, data, back, tools }: { submit: (data: any) => void, index: number, data: any, back: () => void, tools: Database['public']['Tables']['tools']['Row'][]}){
+
+    const ToolsAndVendorsSchema = getToolsAndVendorsSchema(tools);
 
     const form = useForm<z.infer<typeof ToolsAndVendorsSchema>>({
         resolver: zodResolver(ToolsAndVendorsSchema),
         defaultValues: {
-            "toolVendor": "asdf",
-            "primaryDomain": "Traditional Data",
-            "nps": 3,
-            "primaryUseCase": "Sourcing",
-            "accessPatterns": [
-                "Console"
-            ],
-            "pricingStructure": {}
         }
     });
 
