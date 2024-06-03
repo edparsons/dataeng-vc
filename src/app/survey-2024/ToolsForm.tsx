@@ -43,7 +43,7 @@ export function ToolsForm({ submit, index, data, back, tools }: { submit: (data:
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
-                <div className="w-2/3 space-y-8">
+                <div className="md:w-2/3 space-y-8">
                 {Object.keys(ToolsAndVendorsSchema.shape).map((_key) => {
                     return <DynamicFormField _key={_key} form={form} schema={ToolsAndVendorsSchema} />;
                })}

@@ -4,8 +4,8 @@ import { Form } from "./Form"
 
 const Page = () => {
   return (
-    <div className="p-8 bg-slate-100 flex items-center justify-center">
-      <div className="w-[80%] max-w-[800px] min-w-[400px]">
+    <div className="p-4 md:p-8 bg-slate-100 flex items-center justify-center">
+      <div className="w-[100%] md:w-[80%] max-w-[800px]">
       <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 flex flex-row items-center">
       <svg
               xmlns="http://www.w3.org/2000/svg"

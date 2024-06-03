@@ -47,7 +47,7 @@ export function FirmForm({ submit }: { submit: (data: any) => void }){
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
-                <div className="w-2/3 space-y-8">
+                <div className="md:w-2/3 space-y-8">
                 {Object.keys(FirmSchema.shape).map((_key) => {
                     return <DynamicFormField _key={_key} form={form} schema={FirmSchema} />;
                })}
