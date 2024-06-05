@@ -89,6 +89,7 @@ export function Combobox(props: Props) {
                     onSelect={currentValue => {
                       setValue(currentValue);
                     }}
+                    style={{pointerEvents: 'auto'}}
                     value={
                       item
                     }>
