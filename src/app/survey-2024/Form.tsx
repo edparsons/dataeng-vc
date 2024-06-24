@@ -10,6 +10,8 @@ import { Button } from "@/src/components/ui/button";
 import { createClient } from "@supabase/supabase-js"
 import { Database } from "@/src/types_db";
 import { env } from "@/src/env";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/src/components/ui/use-toast";
 
 const supabase = createClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
@@ -19,6 +21,8 @@ export const Form = () => {
   const [maxIndex, setMaxIndex] = React.useState(1)
   const [data, setData] = React.useState<Record<string, any>>({})
   const [tools, setTools] = React.useState<Database['public']['Tables']['tools']['Row'][]>([])
+  const { toast } = useToast()
+  const router = useRouter();
 
   React.useEffect(() => {
     const fetchTools = async () => {
@@ -60,6 +64,18 @@ export const Form = () => {
     window.scrollTo(0, 0);
   }
 
+  const finish = async () => {
+    const { error } = await supabase.from('survey').insert({ data })
+    if (error) {
+      console.error('Error fetching tools:', error)
+      toast({
+        title: 'Error saving survey'
+      })
+      return
+    }
+    router.push('survey-2024/thanks')    
+  }
+
   return (
     <>
     <Carousel setApi={setApi}>
@@ -80,7 +96,7 @@ export const Form = () => {
                     <div>
                     Tool #{index + 1}{data.tools?.[index]?.toolVendor ? `: ${data.tools?.[index]?.toolVendor}` : ''}
                     </div>
-                    <Button>Finish</Button>
+                    <Button onClick={finish}>Finish</Button>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -97,11 +113,11 @@ export const Form = () => {
             })}
         </CarouselContent>
     </Carousel>
-    <pre>
+    {/* <pre>
         current index: {currentIndex}
         max index: {maxIndex}
         {JSON.stringify(data, null, 2)}
-    </pre>
+    </pre> */}
     </>
   )
 }

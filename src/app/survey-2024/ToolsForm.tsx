@@ -25,14 +25,14 @@ export function ToolsForm({ submit, index, data, back, tools }: { submit: (data:
 
     function onSubmit(data: z.infer<typeof ToolsAndVendorsSchema>) {
         console.log(data);
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        });
+        // toast({
+        //     title: "You submitted the following values:",
+        //     description: (
+        //         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        //             <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        //         </pre>
+        //     ),
+        // });
         submit(data);
     }
 
@@ -50,7 +50,7 @@ export function ToolsForm({ submit, index, data, back, tools }: { submit: (data:
                </div>
                 <div className="flex flex-row justify-between mt-8">
                 <Button type="button" variant={'secondary'} onClick={back}>Back</Button>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Add Another Tool</Button>
                </div>
 
             </form>
