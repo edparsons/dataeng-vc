@@ -11,36 +11,54 @@ export type Database = {
     Tables: {
       organizations: {
         Row: {
+          aum: string | null
           created_at: string | null
           domain: string
+          firm_size: string | null
           id: string
+          linkedin: string | null
           name: string | null
           privacy_type: string | null
           public_key: string | null
           public_key_user: string | null
           status: string
+          strike_zone: string | null
+          target_geo: string | null
+          tech_team_size: string | null
           updated_at: string | null
         }
         Insert: {
+          aum?: string | null
           created_at?: string | null
           domain: string
+          firm_size?: string | null
           id?: string
+          linkedin?: string | null
           name?: string | null
           privacy_type?: string | null
           public_key?: string | null
           public_key_user?: string | null
           status?: string
+          strike_zone?: string | null
+          target_geo?: string | null
+          tech_team_size?: string | null
           updated_at?: string | null
         }
         Update: {
+          aum?: string | null
           created_at?: string | null
           domain?: string
+          firm_size?: string | null
           id?: string
+          linkedin?: string | null
           name?: string | null
           privacy_type?: string | null
           public_key?: string | null
           public_key_user?: string | null
           status?: string
+          strike_zone?: string | null
+          target_geo?: string | null
+          tech_team_size?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -110,6 +128,24 @@ export type Database = {
           },
         ]
       }
+      survey: {
+        Row: {
+          created_at: string
+          data: Json
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: number
+        }
+        Relationships: []
+      }
       tools: {
         Row: {
           api: boolean | null
@@ -157,6 +193,7 @@ export type Database = {
           created_at: string | null
           email: string
           id: string
+          linkedin: string | null
           name: string | null
           organization_id: string | null
           photo: string | null
@@ -166,6 +203,7 @@ export type Database = {
           created_at?: string | null
           email: string
           id?: string
+          linkedin?: string | null
           name?: string | null
           organization_id?: string | null
           photo?: string | null
@@ -175,6 +213,7 @@ export type Database = {
           created_at?: string | null
           email?: string
           id?: string
+          linkedin?: string | null
           name?: string | null
           organization_id?: string | null
           photo?: string | null
