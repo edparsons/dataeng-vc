@@ -87,7 +87,8 @@ export default function SupabaseProvider({
     } else {
       setUser(null);
     }
-    if ((window.location.pathname === '/' && userData) || (window.location.pathname === '/sign-in' || event === 'SIGNED_IN')) {
+    console.log(event)
+    if ((window.location.pathname === '/' && userData) || (window.location.pathname === '/sign-in' && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION'))) {
       router.push('/tools');
     } else {
       router.refresh();
